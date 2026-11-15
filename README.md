@@ -10,20 +10,22 @@
 - **License:** Original synthetic data created by the team; no third-party license applies.
 - The full dataset goes in `data/raw/` (not committed). A small sample is in `data/sample/`.
 
-
 ## Install
+
 ```bash
 git clone https://github.com/yzhao-033-ksu/insurance-project-toolkit.git
-cd [repository]
+cd insurance-project-toolkit
 pip install -r requirements.txt
 ```
 
 ## Run
+
 ```bash
-pytest -q          # run the tests
+pytest -q
 ```
 
 ## Team
+
 | Name | GitHub | Role |
-|---|---|---|
-| [Owner name] | @[username] | Repository owner |
+|------|--------|------|
+| Yanming Zhao | @yzhao-033-ksu | Repository owner / Team leader |
