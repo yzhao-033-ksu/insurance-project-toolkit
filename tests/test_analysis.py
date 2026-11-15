@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from toolkit.analysis import summary_stats
+from toolkit.analysis import analyze_by_age_group, highest_claim_group
 
 
 def test_known_answer():
