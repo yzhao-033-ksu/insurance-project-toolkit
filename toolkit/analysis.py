@@ -1,5 +1,5 @@
 """Analysis functions. Replace the starter function with your own."""
-import numpy as np
+import pandas as pd
 
 
 def analyze_by_age_group(df):

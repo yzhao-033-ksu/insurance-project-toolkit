@@ -8,23 +8,8 @@ REQUIRED_COLUMNS = ["claim_id", "age", "claim_amount"]
 
 
 def load_data(path):
-    """Load a CSV file into a DataFrame.
+"""Load a CSV file into a DataFrame."""
 
-    Parameters
-    ----------
-    path : str or Path
-        Path to a CSV file.
-
-    Returns
-    -------
-    pandas.DataFrame
-        The file's contents.
-
-    Raises
-    ------
-    FileNotFoundError
-        If the file does not exist.
-    """
     path = Path(path)
     if not path.exists():
         raise FileNotFoundError(f"Data file not found: {path}")
