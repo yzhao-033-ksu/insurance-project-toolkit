@@ -58,5 +58,3 @@ def test_highest_claim_group():
 
     assert highest["age_group"] == "Senior"
     assert highest["average_claim"] == 5000
-
-    !python -m pytest tests/test_analysis.py -q
