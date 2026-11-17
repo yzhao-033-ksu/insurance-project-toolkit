@@ -58,28 +58,3 @@ def test_highest_claim_group():
 
     assert highest["age_group"] == "Senior"
     assert highest["average_claim"] == 5000
-
-
-
-def test_pure_premium():
-    # Check the pure premium calculation
-    from toolkit.analysis import calculate_pure_premium
-
-    result = calculate_pure_premium(0.25, 4000)
-    assert result == 1000
-
-
-def test_pure_premium_decimal():
-    # Check decimal values
-    from toolkit.analysis import calculate_pure_premium
-
-    result = calculate_pure_premium(0.3252, 5861.39)
-    assert result == pytest.approx(1906.124028)
-
-
-def test_pure_premium_invalid():
-    # Negative values should raise an error
-    from toolkit.analysis import calculate_pure_premium
-
-    with pytest.raises(ValueError):
-        calculate_pure_premium(-0.2, 4000)

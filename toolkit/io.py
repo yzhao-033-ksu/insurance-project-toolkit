@@ -1,7 +1,6 @@
 """Load and validate the project's data."""
 
 from pathlib import Path
-
 import pandas as pd
 
 REQUIRED_COLUMNS = ["claim_id", "age", "claim_amount"]
