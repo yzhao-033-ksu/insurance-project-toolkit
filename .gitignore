@@ -1,18 +1,21 @@
-# Raw data: never committed (large and/or private)
+# Raw data
 data/raw/*
 !data/raw/.gitkeep
 
 # Secrets
 .env
-*.key
+.env.*
+!.env.example
 
-# Python and notebook clutter
+# Python cache
 __pycache__/
 *.pyc
-.ipynb_checkpoints/
 .pytest_cache/
-.ruff_cache/
+.ipynb_checkpoints/
 
-# Outputs created by running the pipeline
-results/
-*.log
+# Virtual environments
+.venv/
+venv/
+
+# Operating system files
+.DS_Store

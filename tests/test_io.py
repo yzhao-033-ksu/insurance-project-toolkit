@@ -1,3 +1,5 @@
+"""Tests for insurance data loading and validation."""
+
 import pandas as pd
 import pytest
 
@@ -5,49 +7,89 @@ from toolkit.io import load_data, validate
 
 
 @pytest.fixture
-def tiny_table():
+def sample_data():
+    """Create a small dataset for testing."""
     return pd.DataFrame({
-        "claim_id": ["C001", "C002", "C003"],
-        "age": [25, 40, 65],
-        "claim_amount": [1000, 3000, 5000]
+        "age": [20, 40, 60],
+        "claim_amount": [100, 200, 300]
     })
+
+
+def test_validate_valid_data(sample_data):
+    result = validate(sample_data)
+    assert len(result) == 3
+
+
+def test_validate_empty_data():
+    with pytest.raises(ValueError):
+        validate(pd.DataFrame())
+
+
+def test_validate_missing_column():
+    df = pd.DataFrame({"age": [20, 30]})
+
+    with pytest.raises(ValueError, match="Missing column"):
+        validate(df)
+
+
+def test_validate_negative_claim():
+    df = pd.DataFrame({
+        "age": [20],
+        "claim_amount": [-100]
+    })
+
+    with pytest.raises(ValueError, match="negative"):
+        validate(df)
+
+
+def test_validate_invalid_age():
+    df = pd.DataFrame({
+        "age": [150],
+        "claim_amount": [100]
+    })
+
+    with pytest.raises(ValueError, match="Age"):
+        validate(df)
+
+
+def test_validate_missing_value():
+    df = pd.DataFrame({
+        "age": [20, None],
+        "claim_amount": [100, 200]
+    })
+
+    with pytest.raises(ValueError, match="missing"):
+        validate(df)
+
+
+def test_validate_non_numeric():
+    df = pd.DataFrame({
+        "age": [20, 30],
+        "claim_amount": ["low", "high"]
+    })
+
+    with pytest.raises(ValueError, match="numeric"):
+        validate(df)
 
 
 def test_load_data(tmp_path):
-    file = tmp_path / "claims.csv"
-    file.write_text(
-        "claim_id,age,claim_amount\n"
-        "C001,25,1000\n"
-        "C002,40,3000\n"
-    )
+    path = tmp_path / "claims.csv"
 
-    df = load_data(file)
-
-    assert len(df) == 2
-    assert "claim_amount" in df.columns
-
-
-def test_load_data_missing_file():
-    with pytest.raises(FileNotFoundError):
-        load_data("nonexistent.csv")
-
-
-def test_validate_accepts_good_table(tiny_table):
-    assert validate(tiny_table) is tiny_table
-
-
-def test_validate_rejects_missing_columns():
     df = pd.DataFrame({
-        "claim_id": ["C001"],
-        "age": [25]
+        "age": [20, 40],
+        "claim_amount": [100, 200]
     })
 
-    with pytest.raises(ValueError):
-        validate(df)
+    df.to_csv(path, index=False)
+
+    result = load_data(path)
+
+    # Hand calculation: 100 + 200 = 300
+    assert result["claim_amount"].sum() == 300
 
 
-def test_validate_rejects_empty_table():
-    df = pd.DataFrame(columns=["claim_id", "age", "claim_amount"])
+def test_load_missing_file(tmp_path):
+    path = tmp_path / "missing.csv"
 
-    with pytest.raises(ValueError):
-        validate(df)
+    with pytest.raises(FileNotFoundError):
+        load_data(path)

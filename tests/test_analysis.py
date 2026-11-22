@@ -1,60 +1,98 @@
+"""Tests for insurance claims analysis."""
+
 import pandas as pd
 import pytest
 
-from toolkit.analysis import analyze_by_age_group, highest_claim_group
+from toolkit.analysis import (
+    summary_stats,
+    analyze_by_age_group,
+    highest_claim_group
+)
 
 
-def test_known_answer():
-    # Check the average claim amounts using known values
+@pytest.fixture
+def sample_data():
+    """Create a small insurance claims table by hand."""
+    return pd.DataFrame({
+        "age": [20, 22, 30, 42, 50, 60, 70, 80],
+        "claim_amount": [100, 300, 500, 700, 900, 1100, 1300, 1500]
+    })
+
+
+def test_summary_count(sample_data):
+    result = summary_stats(sample_data)
+
+    # Known answer: there are 8 claims
+    assert result["number_of_claims"] == 8
+
+
+def test_summary_mean(sample_data):
+    result = summary_stats(sample_data)
+
+    # Known answer: 6400 / 8 = 800
+    assert result["average_claim"] == 800
+
+
+def test_summary_std(sample_data):
+    result = summary_stats(sample_data)
+
+    # Sum of squared deviations = 1,680,000
+    # Sample variance = 1,680,000 / 7 = 240,000
+    # Sample SD = sqrt(240000) = 489.89794856
+    assert result["std_claim"] == pytest.approx(
+        489.89794856, rel=1e-8
+    )
+
+
+def test_age_group_mean(sample_data):
+    result = analyze_by_age_group(sample_data)
+
+    # Known answer: (100 + 300) / 2 = 200
+    assert result["average_claim"].iloc[0] == 200
+
+
+def test_age_group_tolerance():
     df = pd.DataFrame({
-        "age": [25, 28, 35, 40],
-        "claim_amount": [1000, 2000, 3000, 5000]
+        "age": [20, 22, 30, 42],
+        "claim_amount": [0.1, 0.2, 0.2, 0.4]
     })
 
     result = analyze_by_age_group(df)
 
-    young = result[result["age_group"] == "Young"].iloc[0]
-    adult = result[result["age_group"] == "Adult"].iloc[0]
-
-    assert young["average_claim"] == 1500
-    assert young["number_of_claims"] == 2
-    assert adult["average_claim"] == 4000
-    assert adult["number_of_claims"] == 2
+    # Known answer: (0.2 + 0.4) / 2 = 0.3
+    assert result["average_claim"].iloc[1] == pytest.approx(
+        0.3, abs=1e-12
+    )
 
 
-def test_tolerance():
-    # Check a decimal average using a tolerance
+def test_highest_group(sample_data):
+    results = analyze_by_age_group(sample_data)
+    highest = highest_claim_group(results)
+
+    # Known answer: (1300 + 1500) / 2 = 1400
+    assert highest["age_group"] == "66-120"
+    assert highest["average_claim"] == 1400
+
+
+def test_summary_one_claim():
     df = pd.DataFrame({
-        "age": [25, 26],
-        "claim_amount": [0.1, 0.2]
-    })
-
-    result = analyze_by_age_group(df)
-    young = result[result["age_group"] == "Young"].iloc[0]
-
-    assert young["average_claim"] == pytest.approx(0.15)
-
-
-def test_invalid_input():
-    # Negative claim amounts should raise an error
-    df = pd.DataFrame({
-        "age": [25, 35],
-        "claim_amount": [1000, -500]
+        "age": [20],
+        "claim_amount": [100]
     })
 
     with pytest.raises(ValueError):
-        analyze_by_age_group(df)
+        summary_stats(df)
 
 
-def test_highest_claim_group():
-    # Check which age group has the highest average claim
+def test_highest_empty():
+    with pytest.raises(ValueError):
+        highest_claim_group(pd.DataFrame())
+
+
+def test_highest_missing_column():
     df = pd.DataFrame({
-        "age": [25, 35, 65],
-        "claim_amount": [1000, 3000, 5000]
+        "age_group": ["0-25"]
     })
 
-    result = analyze_by_age_group(df)
-    highest = highest_claim_group(result)
-
-    assert highest["age_group"] == "Senior"
-    assert highest["average_claim"] == 5000
+    with pytest.raises(ValueError):
+        highest_claim_group(df)
