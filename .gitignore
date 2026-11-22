@@ -1,21 +1,31 @@
-# Raw data
+# Ignore raw datasets.
 data/raw/*
+
+# Keep the placeholder file for the raw data folder.
 !data/raw/.gitkeep
 
-# Secrets
+# Ignore environment files that may contain secrets.
 .env
 .env.*
+
+# Allow a safe example environment file.
 !.env.example
 
-# Python cache
+# Ignore Python cache folders.
 __pycache__/
+
+# Ignore compiled Python files.
 *.pyc
+
+# Ignore pytest cache files.
 .pytest_cache/
+
+# Ignore Jupyter and Colab checkpoints.
 .ipynb_checkpoints/
 
-# Virtual environments
+# Ignore virtual environments.
 .venv/
 venv/
 
-# Operating system files
+# Ignore macOS system files.
 .DS_Store

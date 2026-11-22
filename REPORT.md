@@ -5,27 +5,28 @@
 
 How do insurance claim amounts vary across age groups, and which age group has the highest average claim amount?
 
-This project focuses on insurance claim severity, which is related to actuarial mathematics.
+This project focuses on insurance claim severity, a topic related to actuarial mathematics.
 
-### 2. Data
+### 2. Dataset
 
-The dataset contains eight synthetic insurance claims.
+The project uses eight synthetic insurance claims created for educational purposes.
 
-Each record has two variables:
-- age: Policyholder age in years.
-- claim_amount: Insurance claim amount in USD.
+The dataset contains two variables:
 
-The data were created for educational purposes and contain no real customer information.
+- `age`: Policyholder age in years.
+- `claim_amount`: Insurance claim amount in USD.
+
+No real customer information is used.
 
 ### 3. Methods
 
 The toolkit contains five public functions in two Python modules.
 
-The io.py module loads CSV files and validates input data.
+The `io.py` module loads CSV files and validates insurance data.
 
-The analysis.py module calculates overall claim statistics, compares claims across four age groups, and identifies the group with the highest average claim amount.
+The `analysis.py` module calculates overall claim statistics, compares claim amounts across four age groups, and identifies the group with the highest average claim amount.
 
-The project uses pandas for data analysis and pytest for automated testing.
+Pandas is used for data analysis, NumPy is used for numerical validation, and pytest is used for automated testing.
 
 ### 4. Results
 
@@ -35,9 +36,7 @@ The overall average claim amount is $800.
 
 The sample standard deviation is approximately $489.90.
 
-Average claims by age group:
-
-| Age Group | Average Claim (USD) | Claim Count |
+| Age Group | Average Claim (USD) | Number of Claims |
 |---|---:|---:|
 | 0-25 | 200 | 2 |
 | 26-45 | 600 | 2 |
@@ -46,36 +45,28 @@ Average claims by age group:
 
 The 66-120 age group has the highest average claim amount at $1,400.
 
-### 5. Testing and Functionality
+### 5. Testing
 
-The project contains 18 pytest tests covering all five public functions.
+The project includes 18 automated pytest tests.
 
-The tests include known-answer calculations, floating-point tolerance tests, invalid-input tests, and small manually created datasets.
+The tests cover valid data, invalid inputs, known-answer calculations, floating-point comparisons, and age-group boundaries.
 
-The toolkit can load CSV files, reject invalid data, calculate statistics, and compare age groups.
-
-The final test results must be verified before submission.
+The final test results will be confirmed before submission.
 
 ### 6. Limitations
 
 The dataset is small and synthetic.
 
-The results cannot be used to estimate real insurance risk.
+The results cannot be generalized to real insurance populations.
 
-The project analyzes claim severity but cannot estimate claim frequency per policy because policy exposure data are unavailable.
-
-The age groups were selected for demonstration purposes.
+The project analyzes claim severity but does not estimate claim frequency because policy exposure data are unavailable.
 
 ### 7. Future Improvements
 
-Future improvements could include a larger public insurance dataset, policy exposure information, claim frequency calculations, and severity distribution fitting.
+Future improvements could include larger insurance datasets, claim frequency calculations, and additional statistical models.
 
-### 8. Individual Contributions
+### 8. Contributions
 
-| Contributor | Work |
-|---|---|
-| Yanming Zhao | Project implementation, validation, analysis, testing, documentation, and demonstration, subject to actual completed work |
+Yanming Zhao: Project implementation, data validation, statistical analysis, automated testing, documentation, and demonstration, subject to actual completed work and instructor approval for an individual project.
 
-This is an individual project, subject to instructor approval.
-
-AI assistance was used for drafting and code review. All submitted work must be reviewed and understood by the student.
+AI assistance was used to help draft and review project materials.
